@@ -19,6 +19,16 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
+    type: {
+      type: String,
+      required: false,
+    },
+    typeCatergory: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
     stock: {
       type: Number,
       required: true,
