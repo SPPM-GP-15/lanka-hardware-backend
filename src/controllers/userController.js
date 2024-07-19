@@ -78,6 +78,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
@@ -90,8 +91,42 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { name, phoneNumber } = req.body;
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    user.name = name || user.name;
+    user.phoneNumber = phoneNumber || user.phoneNumber;
+
+    await user.save();
+
+    res.json({
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        createdAt: user.createdAt,
+        isVerified: user.isVerified,
+      },
+    });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getAllUsers,
+  updateUser,
 };

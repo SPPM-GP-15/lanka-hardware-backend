@@ -2,6 +2,25 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+const addressSchema = new mongoose.Schema({
+  addressLine: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  zip: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -25,6 +44,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    addresses: [addressSchema],
     createdAt: {
       type: Date,
       default: Date.now,
@@ -43,6 +63,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const User = mongoose.model("Users", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

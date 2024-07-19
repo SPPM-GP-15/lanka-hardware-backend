@@ -9,6 +9,7 @@ const userRouter = require("./src/routes/userRouter.js");
 const categoryRouter = require("./src/routes/categoryRouter.js");
 const orderRouter = require("./src/routes/orderRouter.js");
 const cartRouter = require("./src/routes/cartRouter.js");
+const addressRouter = require("./src/routes/addressRouter.js");
 
 const mongoose = require("mongoose");
 
@@ -29,6 +30,7 @@ app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/users", addressRouter);
 
 const server = http.createServer(app);
 server.listen(process.env.PORT || 3000, () => {
