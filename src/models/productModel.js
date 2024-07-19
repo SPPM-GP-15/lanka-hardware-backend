@@ -10,9 +10,17 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    price: {
+    oldPrice: {
       type: Number,
       required: true,
+    },
+    newPrice: {
+      type: Number,
+      required: true,
+    },
+    discountPercentage: {
+      type: Number,
+      required: false,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -23,7 +31,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    typeCatergory: [
+    typeCategory: [
       {
         type: String,
         required: false,
@@ -36,6 +44,10 @@ const productSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
       required: true,
+    },
+    manufacturer: {
+      type: String,
+      required: false,
     },
     createdAt: {
       type: Date,
