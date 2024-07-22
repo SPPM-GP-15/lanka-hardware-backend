@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema(
     },
     oldPrice: {
       type: Number,
-      required: true,
+      required: false,
     },
     newPrice: {
       type: Number,
@@ -27,16 +27,7 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-    type: {
-      type: String,
-      required: false,
-    },
-    typeCategory: [
-      {
-        type: String,
-        required: false,
-      },
-    ],
+    
     stock: {
       type: Number,
       required: true,
