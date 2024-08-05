@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {
-  addAddress,
-  updateAddress,
+  addOrUpdateAddress,
   deleteAddress,
 } = require("../controllers/addressController");
 
-router.post("/:userId/address", addAddress);
-router.put("/:userId/address/:addressId", updateAddress);
-router.delete("/:userId/address/:addressId", deleteAddress);
+router.post("/:userId/address", addOrUpdateAddress);
+router.put("/:userId/address", addOrUpdateAddress);
+router.delete("/:userId/address", deleteAddress);
 
 module.exports = router;

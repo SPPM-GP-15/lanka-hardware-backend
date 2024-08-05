@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 
-// Add a new address
-const addAddress = async (req, res) => {
+// Add or update address
+const addOrUpdateAddress = async (req, res) => {
   try {
     const userId = req.params.userId;
     const address = req.body;
@@ -9,7 +9,7 @@ const addAddress = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    user.addresses.push(address);
+    user.address = address; // Set the address directly
     await user.save();
 
     res.status(201).json(user);
@@ -18,41 +18,15 @@ const addAddress = async (req, res) => {
   }
 };
 
-// Update an address
-const updateAddress = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const addressId = req.params.addressId;
-    const newAddress = req.body;
-
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const address = user.addresses.id(addressId);
-    if (!address) return res.status(404).json({ message: "Address not found" });
-
-    address.set(newAddress);
-    await user.save();
-
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-// Delete an address
+// Delete the address
 const deleteAddress = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const addressId = req.params.addressId;
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const address = user.addresses.id(addressId);
-    if (!address) return res.status(404).json({ message: "Address not found" });
-
-    address.remove();
+    user.address = undefined; // Remove the address
     await user.save();
 
     res.status(200).json(user);
@@ -62,7 +36,6 @@ const deleteAddress = async (req, res) => {
 };
 
 module.exports = {
-  addAddress,
-  updateAddress,
+  addOrUpdateAddress,
   deleteAddress,
 };
