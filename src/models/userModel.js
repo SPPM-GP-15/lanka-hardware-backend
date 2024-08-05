@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    addresses: [addressSchema],
+    addresses: addressSchema,
     createdAt: {
       type: Date,
       default: Date.now,
