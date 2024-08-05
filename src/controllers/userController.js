@@ -97,14 +97,7 @@ const updateUser = async (req, res) => {
 
     res.json({
       success: true,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        createdAt: user.createdAt,
-        isVerified: user.isVerified,
-      },
+      user,
     });
   } catch (error) {
     res.status(500).send(error.message);
