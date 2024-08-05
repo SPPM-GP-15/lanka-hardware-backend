@@ -30,7 +30,7 @@ app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/cart", cartRouter);
-app.use("/api/users", addressRouter);
+app.use("/api/address", addressRouter);
 
 const server = http.createServer(app);
 server.listen(process.env.PORT || 3000, () => {
