@@ -24,14 +24,7 @@ const registerUser = async (req, res) => {
     if (user) {
       res.json({
         success: true,
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          createdAt: user.createdAt,
-          isVerified: user.isVerified,
-        },
+        user,
       });
     }
   } catch (error) {
@@ -65,11 +58,7 @@ const loginUser = async (req, res) => {
     res.json({
       success: true,
       user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        createdAt: user.createdAt,
+        user,
         token: generateAuthToken(user._id),
       },
     });
