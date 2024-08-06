@@ -41,17 +41,34 @@ const addItemToCart = async (req, res) => {
 
 const removeItemFromCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user._id });
-    if (!cart) {
-      return res.status(404).send();
+    const { user, productId } = req.body;
+
+    if (!user || !productId) {
+      return res
+        .status(400)
+        .send({ error: "User ID and product ID are required." });
     }
+
+    const cart = await Cart.findOne({ user });
+
+    if (!cart) {
+      return res.status(404).send({ error: "Cart not found." });
+    }
+
+    const initialLength = cart.items.length;
     cart.items = cart.items.filter(
-      (item) => item.product.toString() !== req.params.productId
+      (item) => item.product.toString() !== productId
     );
+
+    if (cart.items.length === initialLength) {
+      return res.status(404).send({ error: "Item not found in cart." });
+    }
+
     await cart.save();
     res.send(cart);
   } catch (error) {
-    res.status(500).send(error);
+    console.error("Error removing item from cart:", error);
+    res.status(500).send({ error: error.message });
   }
 };
 
