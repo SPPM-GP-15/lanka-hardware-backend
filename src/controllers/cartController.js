@@ -2,29 +2,40 @@ const Cart = require("../models/cartModel");
 
 const addItemToCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user._id });
+    const { user, product } = req.body;
+
+    if (!user || !product) {
+      return res
+        .status(400)
+        .send({ error: "User ID and product ID are required." });
+    }
+
+    const cart = await Cart.findOne({ user });
+
     if (!cart) {
       const newCart = new Cart({
-        user: req.user._id,
-        items: [{ product: req.body.product, quantity: 1 }],
+        user,
+        items: [{ product, quantity: 1 }],
       });
       await newCart.save();
       return res.status(201).send(newCart);
     }
 
     const itemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === req.body.product
+      (item) => item.product.toString() === product
     );
 
     if (itemIndex > -1) {
       cart.items[itemIndex].quantity += 1;
     } else {
-      cart.items.push({ product: req.body.product, quantity: 1 });
+      cart.items.push({ product, quantity: 1 });
     }
+
     await cart.save();
     res.send(cart);
   } catch (error) {
-    res.status(400).send(error);
+    console.error("Error adding item to cart:", error);
+    res.status(400).send({ error: error.message });
   }
 };
 
