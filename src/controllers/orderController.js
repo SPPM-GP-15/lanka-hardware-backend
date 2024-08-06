@@ -26,7 +26,12 @@ const getOrderById = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({})
+    const { status } = req.query;
+    const filter = {};
+    if (status) {
+      filter.status = status;
+    }
+    const orders = await Order.find(filter)
       .populate("user")
       .populate("items.product");
     res.send(orders);
