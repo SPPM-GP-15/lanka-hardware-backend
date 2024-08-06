@@ -117,7 +117,7 @@ const addToWishlist = async (req, res) => {
     }
 
     if (!user.wishlist.includes(productId)) {
-      user.wishlist.push(productId);
+      user.wishlist.push(product);
       await user.save();
       return res.status(200).json({ message: "Product added to wishlist" });
     } else {
@@ -131,14 +131,11 @@ const addToWishlist = async (req, res) => {
 // Remove a product from the user's wishlist
 const removeFromWishlist = async (req, res) => {
   const { userId, productId } = req.params;
-
   try {
     const user = await User.findById(userId);
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     user.wishlist = user.wishlist.filter((id) => id.toString() !== productId);
     await user.save();
 

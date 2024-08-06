@@ -6,18 +6,20 @@ const addItemToCart = async (req, res) => {
     if (!cart) {
       const newCart = new Cart({
         user: req.user._id,
-        items: [req.body],
+        items: [{ product: req.body.product, quantity: 1 }],
       });
       await newCart.save();
       return res.status(201).send(newCart);
     }
+
     const itemIndex = cart.items.findIndex(
       (item) => item.product.toString() === req.body.product
     );
+
     if (itemIndex > -1) {
-      cart.items[itemIndex].quantity += req.body.quantity;
+      cart.items[itemIndex].quantity += 1;
     } else {
-      cart.items.push(req.body);
+      cart.items.push({ product: req.body.product, quantity: 1 });
     }
     await cart.save();
     res.send(cart);
