@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require("cors");
 const http = require("http");
 const path = require("path");
 const express = require("express");
@@ -19,6 +20,7 @@ connection();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
