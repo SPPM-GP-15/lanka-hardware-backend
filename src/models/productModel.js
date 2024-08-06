@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-    
+
     stock: {
       type: Number,
       required: true,
@@ -38,7 +38,7 @@ const productSchema = new mongoose.Schema(
     },
     manufacturer: {
       type: String,
-      required: false,
+      required: true,
     },
     createdAt: {
       type: Date,
