@@ -24,6 +24,22 @@ const getOrderById = async (req, res) => {
   }
 };
 
+const getOrdersByUserId = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.params.userId })
+      .populate("user")
+      .populate("items.product");
+    if (!orders.length) {
+      return res
+        .status(404)
+        .send({ message: "No orders found for this user." });
+    }
+    res.send(orders);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 const getAllOrders = async (req, res) => {
   try {
     const { status } = req.query;
@@ -78,4 +94,5 @@ module.exports = {
   getAllOrders,
   updateOrderStatus,
   cancelOrder,
+  getOrdersByUserId,
 };
