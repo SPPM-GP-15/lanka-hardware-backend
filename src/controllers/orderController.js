@@ -88,6 +88,17 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+const getTotalIncome = async (req, res) => {
+  try {
+    const totalIncome = await Order.aggregate([
+      { $group: { _id: null, totalIncome: { $sum: "$totalAmount" } } },
+    ]);
+    res.send(totalIncome);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 module.exports = {
   createOrder,
   getOrderById,
@@ -95,4 +106,5 @@ module.exports = {
   updateOrderStatus,
   cancelOrder,
   getOrdersByUserId,
+  getTotalIncome,
 };

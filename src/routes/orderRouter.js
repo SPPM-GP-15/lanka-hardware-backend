@@ -6,6 +6,7 @@ const {
   updateOrderStatus,
   cancelOrder,
   getOrdersByUserId,
+  getTotalIncome,
 } = require("../controllers/orderController");
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.get("/", getAllOrders);
 router.put("/:id/status", updateOrderStatus);
 router.put("/:id/cancel", cancelOrder);
 router.get("/user/:userId", getOrdersByUserId);
+router.get("/income/total", getTotalIncome);
 
 module.exports = router;
