@@ -90,10 +90,13 @@ const cancelOrder = async (req, res) => {
 
 const getTotalIncome = async (req, res) => {
   try {
-    const totalIncome = await Order.aggregate({
-      $group: { _id: null, totalIncome: { $sum: "$totalAmount" } },
-    });
-    res.send(totalIncome);
+    const result = await Order.aggregate([
+      { $group: { _id: null, totalIncome: { $sum: "$totalAmount" } } },
+    ]);
+
+    const totalIncome = result.length > 0 ? result[0].totalIncome : 0;
+
+    res.send({ totalIncome });
   } catch (error) {
     res.status(500).send(error);
   }
