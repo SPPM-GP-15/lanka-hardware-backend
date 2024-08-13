@@ -7,7 +7,11 @@ const {
   addToWishlist,
   removeFromWishlist,
   getWishlist,
+  getUserProfile, // Import the new controller
 } = require("../controllers/userController");
+
+const { protect } = require("../middleware/authMiddleware"); // Import the auth middleware
+
 const router = express.Router();
 
 router.post("/signup", registerUser);
@@ -17,4 +21,6 @@ router.put("/updateUser/:userId", updateUser);
 router.post("/wishlist/add/:userId/:productId", addToWishlist);
 router.delete("/wishlist/remove/:userId/:productId", removeFromWishlist);
 router.get("/wishlist/:userId", getWishlist);
+router.get("/me", protect, getUserProfile); // Add the new route with protection
+
 module.exports = router;
