@@ -32,11 +32,11 @@ const addItemToCart = async (req, res) => {
 
       await cart.save();
     }
+    const populatedCart = await Cart.findById(cart._id)
+      .populate("items.product")
+      .exec();
 
-    // Populate the cart items with product details before returning
-    await cart.populate("items.product").execPopulate();
-
-    res.send(cart);
+    res.send(populatedCart);
   } catch (error) {
     console.error("Error adding item to cart:", error);
     res.status(400).send({ error: error.message });
