@@ -10,7 +10,7 @@ const addItemToCart = async (req, res) => {
         .send({ error: "User ID and product ID are required." });
     }
 
-    const cart = await Cart.findOne({ user });
+    let cart = await Cart.findOne({ user });
 
     if (!cart) {
       const newCart = new Cart({
@@ -18,20 +18,24 @@ const addItemToCart = async (req, res) => {
         items: [{ product, quantity: 1 }],
       });
       await newCart.save();
-      return res.status(201).send(newCart);
-    }
-
-    const itemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === product
-    );
-
-    if (itemIndex > -1) {
-      cart.items[itemIndex].quantity += 1;
+      cart = newCart;
     } else {
-      cart.items.push({ product, quantity: 1 });
+      const itemIndex = cart.items.findIndex(
+        (item) => item.product.toString() === product
+      );
+
+      if (itemIndex > -1) {
+        cart.items[itemIndex].quantity += 1;
+      } else {
+        cart.items.push({ product, quantity: 1 });
+      }
+
+      await cart.save();
     }
 
-    await cart.save();
+    // Populate the cart items with product details before returning
+    await cart.populate("items.product").execPopulate();
+
     res.send(cart);
   } catch (error) {
     console.error("Error adding item to cart:", error);
